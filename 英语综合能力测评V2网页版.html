@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>英语综合能力测评</title>
+<style>
+body{font-family:Arial,"Microsoft YaHei";background:#f5f7fb;margin:0;padding:20px}
+.box{max-width:680px;margin:auto;background:#fff;padding:25px;border-radius:18px}
+h1{text-align:center}
+input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+button{width:100%;padding:14px;background:#3478f6;color:white;border:0;border-radius:10px;font-size:16px}
+.hide{display:none}
+.option{display:block;background:#f5f6f8;padding:12px;margin:10px 0;border-radius:8px}
+.reading{background:#fafafa;padding:15px;line-height:1.7;border-radius:10px}
+.score{text-align:center;font-size:50px;color:#3478f6;font-weight:bold}
+.bar{height:8px;background:#3478f6;width:0}
+</style>
+</head>
+<body>
+<div class="box">
+<div id="start">
+<h1>英语综合能力水平测评</h1>
+<p>20道题快速了解孩子英语基础能力</p>
+<input id="name" placeholder="孩子姓名（可选）">
+<input id="grade" placeholder="当前年级（可选）">
+<button onclick="start()">开始测试</button>
+</div>
+
+<div id="test" class="hide">
+<p>第 <span id="num"></span> / 20 题</p>
+<div style="height:8px;background:#eee"><div id="bar" class="bar"></div></div>
+<div id="content"></div>
+<button onclick="next()">下一题</button>
+</div>
+
+<div id="result" class="hide">
+<h2 style="text-align:center">测评完成</h2>
+<div class="score" id="score"></div>
+<p style="text-align:center">感谢参与测试</p>
+</div>
+</div>
+
+<script>
+const qs=[
+["Vocabulary","What is this? 🍎",["apple","banana","milk","bread"],0],
+["Vocabulary","The opposite of early is:",["late","fast","small","young"],0],
+["Vocabulary","Enormous means:",["very big","very small","very cold","very old"],0],
+["Vocabulary","Tom was exhausted. He wanted to:",["rest","run","sing","jump"],0],
+["Vocabulary","Discovered means:",["found","lost","broke","forgot"],0],
+["Grammar","She ____ her homework yesterday.",["finish","finished","finishes","finishing"],1],
+["Grammar","If I have time tomorrow, I ____ read.",["will","would","did","was"],0],
+["Grammar","The girl ____ won the race is my friend.",["who","where","what","when"],0],
+["Grammar","Although it rained, we ____ outside.",["played","play","playing","plays"],0],
+["Grammar","She has lived here ____ three years.",["for","since","at","from"],0],
+["Reading","Mia enjoys science. She reads books about animals. She wrote a report about dolphins and learned they are intelligent.","What did Mia write about?",["Dolphins","Plants","Robots","Space"],0],
+["Reading","Mia enjoys science. She reads books about animals. She wrote a report about dolphins and learned they are intelligent.","Why does Mia like dolphins?",["They are intelligent","They live in houses","They are plants","They are easy"],0],
+["Reading","Ben wanted to learn cooking. His father taught him recipes and ingredients. After months of practice, Ben cooked dinner for his family.","What helped Ben improve?",["Practice","Luck","Games","Movies"],0],
+["Reading","Ben wanted to learn cooking. His father taught him recipes and ingredients. After months of practice, Ben cooked dinner for his family.","Who taught Ben?",["Teacher","Father","Friend","Mother"],1],
+["Reading","Ben wanted to learn cooking. His father taught him recipes and ingredients. After months of practice, Ben cooked dinner for his family.","Main idea?",["Practice improves skills","Cooking is impossible","Food is boring","Recipes are useless"],0],
+["Advanced","Dry means:",["with little water","very crowded","very dark","very cold"],0],
+["Advanced","Sarah saved money because she wanted to:",["buy a bicycle","buy food","travel","help friend"],0],
+["Advanced","If Tom finishes homework, he can play outside. Meaning?",["Homework comes before playing","He hates playing","He never studies","He cannot go"],0],
+["Advanced","Tom practiced piano every day and performed at a concert. We infer:",["Practice helped him improve","He hated music","He never played","Concerts are easy"],0],
+["Advanced","Choose correct sentence:",["Because weather cold","The boy stayed inside because it was cold.","Weather boy inside","Boy because stayed"],1]
+];
+
+let i=0,a=[];
+function start(){document.getElementById("start").className="hide";document.getElementById("test").className="";show();}
+function show(){
+let q=qs[i];document.getElementById("num").innerHTML=i+1;document.getElementById("bar").style.width=i/20*100+"%";
+let h=q[0]=="Reading"?"<div class='reading'>"+q[1]+"</div><h3>"+q[2]+"</h3>":"<h3>"+q[1]+"</h3>";
+let opts=q[0]=="Reading"?q[3]:q[2];
+opts.forEach((x,j)=>h+=`<label class="option"><input type="radio" name="a" value="${j}">${x}</label>`);
+document.getElementById("content").innerHTML=h;
+}
+function next(){let x=document.querySelector("input[name=a]:checked");if(!x){alert("请选择答案");return}a[i]=Number(x.value);i++;if(i<20)show();else finish();}
+function finish(){let s=0;qs.forEach((q,j)=>{if(a[j]==q[3])s+=5});document.getElementById("test").className="hide";document.getElementById("result").className="";document.getElementById("score").innerHTML=s+"/100";}
+</script>
+</body>
+</html>
